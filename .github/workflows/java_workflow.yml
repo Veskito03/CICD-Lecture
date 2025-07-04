@@ -1,0 +1,21 @@
+name: JavaWorkflow
+
+on: 
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+
+  jobs: 
+    build-test:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout Repository
+          uses: actions/chekout@v4
+
+        - nme: Set up JDK 21
+          uses: actions/setup-java@4
+          with:
+            distribution: 'temurin'
+            java-version: 21
