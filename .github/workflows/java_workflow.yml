@@ -28,3 +28,16 @@ jobs:
         with:
           name: junit-results
           path: target/surefire-reports/
+  linter-test:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Lint Test
+        run: mvn checkstyle:check
+
+      - name: upload lint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-results
+          path: target/checkstyle-result/
