@@ -1,4 +1,17 @@
-- name: Checkout Repository
+name: JavaWorkflow
+
+on: 
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+
+jobs: 
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 21
@@ -6,3 +19,29 @@
         with:
           distribution: 'temurin'
           java-version: 21
+      - name: Build and Test with Maven
+        run: mvn -B clean verify
+
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: target/surefire-reports/
+          
+  linter-test:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+    
+      - name: Lint Test
+        run: mvn checkstyle:check
+
+      - name: upload lint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-results
+          path: target/checkstyle-result/
