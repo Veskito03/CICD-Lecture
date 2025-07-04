@@ -1,4 +1,4 @@
-name: JavaWorkflow
+name: Parallelisierung
 
 on:
   push:
